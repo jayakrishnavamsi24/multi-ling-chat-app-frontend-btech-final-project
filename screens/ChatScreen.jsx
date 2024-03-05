@@ -64,9 +64,9 @@ const ChatScreen = ({ route }) => {
 
   const handleTranslate = async (index) => {
     try {
-        const targetLanguage = languageCode; // Your target language
+        const targetLanguage = languageCode;
 
-        let updatedMessages = [...messages]; // Create a copy
+        let updatedMessages = [...messages];
         console.log(targetLanguage);
         console.log(updatedMessages[index].message);
 
@@ -78,18 +78,10 @@ const ChatScreen = ({ route }) => {
         if (!response.data || !response.data.translation) {
           throw new Error('Translation request failed');
         }
-        // console.log(response.data.translation);
-        // console.log(!updatedMessages[index].isTranslated);
         updatedMessages[index].translatedText = response.data.translation;
-        // updatedMessages[index].isTranslated = !updatedMessages[index].isTranslated;
-        // console.log(updatedMessages[index].translatedText);
-        // console.log(updatedMessages[index].isTranslated);
-        // console.log(updatedMessages[index]);
-        // console.log(updatedMessages);
         updateMessages(updatedMessages, index);
     } catch (error) {
         console.error("Translation Error:", error); 
-        // Handle error gracefully (display an error message, etc.)
         console.error("Error details:", error.response);
     }
   };
@@ -140,13 +132,6 @@ const ChatScreen = ({ route }) => {
       const upMsg = querySnap.docs.map((doc) => doc.data());
       setMessages(upMsg);
       setIsLoading(false);
-
-      // console.log("Snapshot update received"); // Check if onSnapshot triggers
-  
-      // if (scrollViewRef.current) {
-      //   console.log("Scrolling within onSnapshot...");
-      //   scrollViewRef.current.scrollToEnd({ animated: true });
-      // } 
     });
 
     return unsubscribe;
@@ -162,7 +147,6 @@ const ChatScreen = ({ route }) => {
         }
       }
     );
-
     // Clean up the listener when the component unmounts
     return () => {
       keyboardDidHideListener.remove();

@@ -62,9 +62,6 @@ const SignUpScreen = () => {
   };
 
   const handleSignUp = async () => {
-    console.log("Name:", name);
-  console.log("Email:", email);
-  console.log("Password:", password); 
     if (getEmailValidationStatus && email !== "") {
       await createUserWithEmailAndPassword(firebaseAuth, email, password).then(
         (userCred) => {
@@ -84,11 +81,6 @@ const SignUpScreen = () => {
         }
       );
     }
-    // try {
-    //   await AsyncStorage.setItem('userLanguage', selectedLanguage); 
-    // } catch (error) {
-    //   console.error("Error saving language:", error);
-    // }
   };
 
   // useEffect(() => {

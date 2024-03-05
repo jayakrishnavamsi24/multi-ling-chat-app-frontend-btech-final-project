@@ -47,33 +47,19 @@ const ProfileScreen = () => {
 
   const handleUpdateLanguage = async () => {
     try {
-        // console.log(user);
-        // console.log(user.uid);
-        // 1. Safeguard against undefined user or user.uid
-        // if (!user || !user.uid) {
-        //     console.warn("Cannot update language. User data not yet available.");
-        //     return; // Early exit if user data is missing
-        // }
-
-        // 2. Update Firebase (Prioritize Firebase)
         const userDocRef = doc(firestoreDB, "users", user._id); 
         // console.log(userDocRef);
         await updateDoc(userDocRef, { languageCode: selectedLanguage }); 
 
-        // 3. Update Redux State 
         dispatch(updateUserLanguageCode(selectedLanguage)); 
         Alert.alert("Update Successful", "Language has been updated successfully!");
 
     } catch (error) {
         console.error("Language update error:", error);
-        // Handle the error, display an error message to the user
-        Alert.alert("Update Failed", "An error occurred while updating the language. Please try again later.");
 
+        Alert.alert("Update Failed", "An error occurred while updating the language. Please try again later.");
     }
   };
-
-
-
 
   const handleLogout = async () => {
     await firebaseAuth.signOut().then(() => {

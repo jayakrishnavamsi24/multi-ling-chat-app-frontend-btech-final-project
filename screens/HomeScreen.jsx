@@ -26,7 +26,7 @@ const HomeScreen = () => {
   useLayoutEffect(() => {
     const chatQuery = query(
       collection(firestoreDB, "chats"),
-      orderBy("_id", "desc")
+      orderBy("_id", "asc")
     );
 
     const unsubscribe = onSnapshot(chatQuery, (querySnapShot) => {
@@ -35,7 +35,6 @@ const HomeScreen = () => {
       setIsLoading(false);
     });
 
-    //  Return the unsubscribe funciton to stop listening to the updates
     return unsubscribe;
   }, []);
 

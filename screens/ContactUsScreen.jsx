@@ -23,7 +23,7 @@ const ContactUsScreen = () => {
       <View>
         <Text style={{fontWeight: 'bold', fontSize: 30, textAlign: 'center'}}>Contact Us </Text>
         <Text className="mt-5 px-5 text-[18px] text-center">
-          Phone(IN): +919849022338
+          Phone(IN): +919848022338
         </Text>
         <Text className="mt-5 px-5 text-[18px] text-center">
           Email: support@multilingualchat.com

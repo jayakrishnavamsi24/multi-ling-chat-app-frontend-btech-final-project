@@ -26,41 +26,42 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     if (getEmailValidationStatus && email !== "") {
-      await signInWithEmailAndPassword(firebaseAuth, email, password)
-        .then(async (userCred) => { // Use async with await here
-          if (userCred) {
-            const userDocRef = doc(firestoreDB, "users", userCred.user.uid); 
-            const userDocSnap = await getDoc(userDocRef); // Await the result
-
-            if (userDocSnap.exists()) {
-              console.log("User Data : ", userDocSnap.data());
-              dispatch(SET_USER(userDocSnap.data())); 
-            } else {
-              // Handle the case where the user document doesn't exist
-              console.error("User document not found!", userCred.user.uid);
-              // You could display an error message or potentially redirect
-              // the user to a profile creation flow.
-            }
-          }
-        }) 
-        .catch((err) => {
-          console.log("Error : ", err.message);
-          if (err.message.includes("wrong-password")) {
-            setAlert(true);
-            setAlertMessage("Password Mismatch");
-          } else if (err.message.includes("user-not-found")) {
-            setAlert(true);
-            setAlertMessage("User Not Found");
+      try {
+        const userCred = await signInWithEmailAndPassword(firebaseAuth, email, password);
+        
+        if (userCred) {
+          const userDocRef = doc(firestoreDB, "users", userCred.user.uid);
+          const userDocSnap = await getDoc(userDocRef);
+  
+          if (userDocSnap.exists()) {
+            console.log("User Data:", userDocSnap.data());
+            dispatch(SET_USER(userDocSnap.data()));
           } else {
-            setAlert(true);
-            setAlertMessage("Invalid Email Address");
+            console.error("User document not found!", userCred.user.uid);
           }
-          setInterval(() => {
-            setAlert(false);
-          }, 2000);
-        });
+        }
+      } catch (err) {
+        console.log("Error:", err.message);
+  
+        let alertMessage;
+        if (err.message.includes("wrong-password")) {
+          alertMessage = "Password Mismatch";
+        } else if (err.message.includes("user-not-found")) {
+          alertMessage = "User Not Found";
+        } else {
+          alertMessage = "Invalid Email Address";
+        }
+  
+        setAlert(true);
+        setAlertMessage(alertMessage);
+  
+        setTimeout(() => {
+          setAlert(false);
+        }, 2000);
+      }
     }
   };
+  
 
   return (
     <>
@@ -87,7 +88,6 @@ const LoginScreen = () => {
             {alert && (
               <Text className="text-base text-red-600">{alertMessage}</Text>
             )}
-
             {/* email */}
             <UserTextInput
               placeholder="Email"
@@ -95,17 +95,13 @@ const LoginScreen = () => {
               setStatValue={setEmail}
               setGetEmailValidationStatus={setGetEmailValidationStatus}
             />
-
             {/* password */}
-
             <UserTextInput
               placeholder="Password"
               isPass={true}
               setStatValue={setPassword}
             />
-
             {/* login button */}
-
             <TouchableOpacity
               onPress={handleLogin}
               className="w-full px-4 py-2 rounded-xl bg-primary my-3 flex items-center justify-center"
@@ -114,7 +110,6 @@ const LoginScreen = () => {
                 Sign In
               </Text>
             </TouchableOpacity>
-
             <View className="w-full py-12 flex-row items-center justify-center space-x-2">
               <Text className="text-base text-primaryText">
                 Don't have an account?
